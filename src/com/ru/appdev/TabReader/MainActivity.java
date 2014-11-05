@@ -52,6 +52,15 @@ public class MainActivity extends Activity {
         getActionBar().removeAllTabs();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_activity_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
     /**
      * A TabListener receives event callbacks from the action bar as tabs
      * are deselected, selected, and reselected.
@@ -76,6 +85,8 @@ public class MainActivity extends Activity {
         }
     }
 
+
+
     private class TabContentFragment extends Fragment {
         private String mText;
 
@@ -98,12 +109,6 @@ public class MainActivity extends Activity {
             return fragView;
         }
 
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-            // Inflate the menu items for use in the action bar
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.main_activity_actions, menu);
-            return super.onCreateOptionsMenu(menu);
-        }
+
     }
 }
