@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TabReader</string>
+    <string name="action_add">Add tab</string>
+    <string name="action_open">Open document</string>
+    <string name="action_search">Search in document</string>
+    <string name="action_close">Close tab</string>
+</resources>
