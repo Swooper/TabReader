@@ -6,11 +6,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.View;
-import android.view.Menu;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,37 +15,52 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.action_bar_tabs);
+        onToggleTabs(); // To display the tab bar when the app is started. May need revising later.
     }
 
-    public void onAddTab(View v) {
+    public void onAddTab() {
         final ActionBar bar = getActionBar();
         final int tabCount = bar.getTabCount();
-        final String text = "Tab " + tabCount;
+        final String text = "text";
         bar.addTab(bar.newTab()
-                .setText(text)
+                .setText(R.string.new_tab)
                 .setTabListener(new TabListener(new TabContentFragment(text))));
     }
 
-    public void onRemoveTab(View v) {
+    public void onRemoveTab() {
         final ActionBar bar = getActionBar();
-        if(bar.getTabCount() > 0)
-            bar.removeTabAt(bar.getTabCount() - 1);
+        try {
+            if (bar.getTabCount() > 0)
+                bar.removeTabAt(bar.getSelectedTab().getPosition());
+        }
+        catch (NullPointerException npe) {
+            System.out.println("ERROR in onRemoveTab: " + npe);
+        }
     }
 
-    public void onToggleTabs(View v) {
+    public void onToggleTabs() {
         final ActionBar bar = getActionBar();
-
-        if (bar.getNavigationMode() == ActionBar.NAVIGATION_MODE_TABS) {
-            bar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-            bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE, ActionBar.DISPLAY_SHOW_TITLE);
-        } else {
-            bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
+        try {
+            if (bar.getNavigationMode() == ActionBar.NAVIGATION_MODE_TABS) {
+                bar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+                bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE, ActionBar.DISPLAY_SHOW_TITLE);
+            } else {
+                bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+                bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
+            }
+        }
+        catch (NullPointerException npe) {
+            System.out.println("ERROR in onToggleTabs: " + npe);
         }
     }
 
     public void onRemoveAllTabs(View v) {
-        getActionBar().removeAllTabs();
+        try {
+            getActionBar().removeAllTabs();
+        }
+        catch (NullPointerException npe) {
+            System.out.println("ERROR in onRemoveAllTabs: " + npe);
+        }
     }
 
     @Override
@@ -58,6 +69,27 @@ public class MainActivity extends Activity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_activity_actions, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                onAddTab();
+                return true;
+            case R.id.action_open:
+                // TODO Handle file opening here
+                return true;
+            case R.id.action_close:
+                onRemoveTab();
+                return true;
+            case R.id.action_search:
+                // TODO Handle search here
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
