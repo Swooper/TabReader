@@ -7,8 +7,9 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.*;
+import android.webkit.WebView;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 public class MainActivity extends Activity {
     @Override
@@ -19,12 +20,17 @@ public class MainActivity extends Activity {
     }
 
     public void onAddTab() {
-        final ActionBar bar = getActionBar();
-        final int tabCount = bar.getTabCount();
-        final String text = "text";
-        bar.addTab(bar.newTab()
+        try {
+            final ActionBar bar = getActionBar();
+            //final int tabCount = bar.getTabCount();
+            final String text = "text";
+            bar.addTab(bar.newTab()
                 .setText(R.string.new_tab)
                 .setTabListener(new TabListener(new TabContentFragment(text))));
+        }
+        catch (NullPointerException npe) {
+            System.out.println("ERROR in onAddTab: " + npe);
+        }
     }
 
     public void onRemoveTab() {
@@ -54,14 +60,15 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void onRemoveAllTabs(View v) {
+    // Might want this method later, keeping it commented out for now.
+    /*public void onRemoveAllTabs(View v) {
         try {
             getActionBar().removeAllTabs();
         }
         catch (NullPointerException npe) {
             System.out.println("ERROR in onRemoveAllTabs: " + npe);
         }
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,7 +120,7 @@ public class MainActivity extends Activity {
         }
 
         public void onTabReselected(Tab tab, FragmentTransaction ft) {
-            Toast.makeText(MainActivity.this, "Reselected!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, "Reselected!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -121,6 +128,7 @@ public class MainActivity extends Activity {
 
     private class TabContentFragment extends Fragment {
         private String mText;
+        private String currentDocument = "https://dl.dropboxusercontent.com/u/9318533/Primer.pdf"; // Placeholder test document
 
         public TabContentFragment(String text) {
             mText = text;
@@ -131,14 +139,24 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View fragView = inflater.inflate(R.layout.action_bar_tab_content, container, false);
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+            View v = inflater.inflate(R.layout.action_bar_tab_content, container, false);
+            if(currentDocument != null) {
+                WebView wv = new WebView(this.getActivity());
+                wv.getSettings().setJavaScriptEnabled(true);
+                //wv.getSettings().setPluginsEnabled(true);
+                wv.loadUrl("https://docs.google.com/gview?embedded=true&url="+currentDocument);
+                setContentView(wv);
+            }
+
+            return v;
+            /*View fragView = inflater.inflate(R.layout.action_bar_tab_content, container, false);
 
             TextView text = (TextView) fragView.findViewById(R.id.text);
             text.setText(mText);
 
-            return fragView;
+            return fragView;*/
         }
 
 
