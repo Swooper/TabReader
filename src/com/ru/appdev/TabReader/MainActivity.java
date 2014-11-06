@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.*;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 //import android.widget.Toast;
@@ -112,7 +113,7 @@ public class MainActivity extends Activity {
         }
 
         public void onTabSelected(Tab tab, FragmentTransaction ft) {
-            ft.add(R.id.fragment_content, mFragment, mFragment.getText());
+            ft.add(R.id.webView1, mFragment, mFragment.getText());
         }
 
         public void onTabUnselected(Tab tab, FragmentTransaction ft) {
@@ -128,7 +129,7 @@ public class MainActivity extends Activity {
 
     private class TabContentFragment extends Fragment {
         private String mText;
-        private String currentDocument = "https://dl.dropboxusercontent.com/u/9318533/Primer.pdf"; // Placeholder test document
+        private String currentDocument = "https://dl.dropboxusercontent.com/u/9318533/Combat.pdf"; // Placeholder test document
 
         public TabContentFragment(String text) {
             mText = text;
@@ -145,8 +146,7 @@ public class MainActivity extends Activity {
             if(currentDocument != null) {
                 WebView wv = new WebView(this.getActivity());
                 wv.getSettings().setJavaScriptEnabled(true);
-                //wv.getSettings().setPluginsEnabled(true);
-                wv.loadUrl("https://docs.google.com/gview?embedded=true&url="+currentDocument);
+                wv.loadUrl("https://docs.google.com/gview?embedded=true&url=" + currentDocument);
                 setContentView(wv);
             }
 
