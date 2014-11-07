@@ -15,11 +15,10 @@ public class MainActivity extends Activity {
         onToggleTabs(); // To display the tab bar when the app is started. May need revising later.
     }
 
+    //Tab functionality based on http://www.coderzheaven.com/2012/10/08/dynamically-adding-removing-toggling-removing-actionbar-tabs-android-part-2/
     public void onAddTab() {
         try {
             final ActionBar bar = getActionBar();
-            //final int tabCount = bar.getTabCount();
-            //final String text = "text";
             bar.addTab(bar.newTab()
                 .setText(R.string.new_tab)
                 .setTabListener(new TabListener(new TabContentFragment())));
@@ -29,6 +28,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    // Close a tab and dispose of it properly.
     public void onRemoveTab() {
         final ActionBar bar = getActionBar();
         try {
@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    // Toggle the tab bar on/off
     public void onToggleTabs() {
         final ActionBar bar = getActionBar();
         try {
@@ -56,39 +57,23 @@ public class MainActivity extends Activity {
         }
     }
 
-    // Might want this method later, keeping it commented out for now.
-    /*public void onRemoveAllTabs(View v) {
-        try {
-            getActionBar().removeAllTabs();
-        }
-        catch (NullPointerException npe) {
-            System.out.println("ERROR in onRemoveAllTabs: " + npe);
-        }
-    }*/
-
+    // Inflate the menu items for use in the action bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_activity_actions, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    // Handle presses on the action bar items
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_add:
                 onAddTab();
                 return true;
-            case R.id.action_open:
-                // TODO Handle file opening here
-                return true;
             case R.id.action_close:
                 onRemoveTab();
-                return true;
-            case R.id.action_search:
-                // TODO Handle search here
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -116,7 +101,7 @@ public class MainActivity extends Activity {
         }
 
         public void onTabReselected(Tab tab, FragmentTransaction ft) {
-            //Toast.makeText(MainActivity.this, "Reselected!", Toast.LENGTH_SHORT).show();
+            // This method must be here, but we don't want to do anything special when it's called
         }
     }
 
