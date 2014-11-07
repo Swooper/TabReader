@@ -3,14 +3,9 @@ package com.ru.appdev.TabReader;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.*;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.widget.TextView;
-//import android.widget.Toast;
 
 public class MainActivity extends Activity {
     @Override
@@ -24,10 +19,10 @@ public class MainActivity extends Activity {
         try {
             final ActionBar bar = getActionBar();
             //final int tabCount = bar.getTabCount();
-            final String text = "text";
+            //final String text = "text";
             bar.addTab(bar.newTab()
                 .setText(R.string.new_tab)
-                .setTabListener(new TabListener(new TabContentFragment(text))));
+                .setTabListener(new TabListener(new TabContentFragment())));
         }
         catch (NullPointerException npe) {
             System.out.println("ERROR in onAddTab: " + npe);
@@ -113,7 +108,7 @@ public class MainActivity extends Activity {
         }
 
         public void onTabSelected(Tab tab, FragmentTransaction ft) {
-            ft.add(R.id.webView1, mFragment, mFragment.getText());
+            ft.add(R.id.webView, mFragment);
         }
 
         public void onTabUnselected(Tab tab, FragmentTransaction ft) {
@@ -125,40 +120,4 @@ public class MainActivity extends Activity {
         }
     }
 
-
-
-    private class TabContentFragment extends Fragment {
-        private String mText;
-        private String currentDocument = "https://dl.dropboxusercontent.com/u/9318533/Combat.pdf"; // Placeholder test document
-
-        public TabContentFragment(String text) {
-            mText = text;
-        }
-
-        public String getText() {
-            return mText;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-            View v = inflater.inflate(R.layout.action_bar_tab_content, container, false);
-            if(currentDocument != null) {
-                WebView wv = new WebView(this.getActivity());
-                wv.getSettings().setJavaScriptEnabled(true);
-                wv.loadUrl("https://docs.google.com/gview?embedded=true&url=" + currentDocument);
-                setContentView(wv);
-            }
-
-            return v;
-            /*View fragView = inflater.inflate(R.layout.action_bar_tab_content, container, false);
-
-            TextView text = (TextView) fragView.findViewById(R.id.text);
-            text.setText(mText);
-
-            return fragView;*/
-        }
-
-
-    }
 }
