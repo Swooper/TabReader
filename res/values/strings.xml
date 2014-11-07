@@ -6,4 +6,8 @@
     <string name="action_search">Search in document</string>
     <string name="action_close">Close tab</string>
     <string name="new_tab">New tab</string>
+    <string name="file_dialog_title">Open PDF file</string>
+    <string name="file_dialog_text">Paste in the link to a PDF file</string>
+    <string name="file_dialog_positive">Open</string>
+    <string name="file_dialog_negative">Cancel</string>
 </resources>
